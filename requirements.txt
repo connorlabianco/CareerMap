@@ -1,0 +1,8 @@
+Flask
+python-dotenv
+authlib
+requests
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+flask-cors
