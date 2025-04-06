@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerMap - Welcome</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #2c2c2c;
+    }
+
+    .navbar {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #2c2c2c;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .google-signin {
+      display: flex;
+      align-items: center;
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem;
+    }
+
+    .google-signin img {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.75rem;
+    }
+
+    .tos {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .tos a {
+      font-weight: 600;
+      color: #374151;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>CareerMap</h1>
+  <nav class="navbar">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">FAQ</a>
+  </nav>
+  <h2>Welcome</h2>
+  <div id="g_id_onload"
+       data-client_id="{{ client_id }}"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false"
+       data-context="signin">
+  </div>
+  <div class="g_id_signin" 
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="rectangular"
+       data-logo_alignment="left">
+  </div>
+  <p class="tos">By signing up, you agree to our <a href="#">TOS</a>.</p>
+
+  <script>
+    function handleCredentialResponse(response) {
+      console.log('Google response:', response);
+      
+      // The response.credential is a JWT ID token
+      const credential = response.credential;
+      
+      // Send the credential to your backend
+      fetch('/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include',  // Important for session cookies
+        body: JSON.stringify({
+          credential: credential,
+          g_csrf_token: document.cookie.split(';').find(cookie => cookie.trim().startsWith('g_csrf_token='))?.split('=')[1]
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Server response:', data);
+        if (data.success) {
+          window.location.href = '/dashboard';
+        } else {
+          console.error('Authentication failed:', data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  </script>
+</body>
+</html>

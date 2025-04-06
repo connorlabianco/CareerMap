@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerMap Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .panel {
+      padding: 24px;
+      background: white;
+      margin: 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar {
+      width: 25%;
+    }
+
+    .main {
+      width: 50%;
+    }
+
+    .nav {
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .skills-section {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .skills, .mastery {
+      flex: 1;
+    }
+
+    .skill-item {
+      margin-bottom: 16px;
+    }
+
+    .progress-bar {
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      background-color: #e0e0e0;
+      margin-top: 4px;
+    }
+
+    .progress {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .progress.low {
+      background-color: red;
+    }
+
+    .progress.medium {
+      background-color: orange;
+    }
+
+    .progress.high {
+      background-color: green;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+      font-size: 20px;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 16px;
+      color: #222;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      background-color: #4f46e5;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    button:hover {
+      background-color: #3730a3;
+    }
+
+    p {
+      margin-top: 16px;
+      color: #555;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar panel">
+    <div class="skills-section">
+      <div class="skills">
+        <h2>Skills needed</h2>
+        <div class="skill-item">Python</div>
+        <div class="skill-item">Flask</div>
+        <div class="skill-item">HTML</div>
+      </div>
+      <div class="mastery">
+        <h2>Mastery</h2>
+        <div class="skill-item">
+          <div class="progress-bar">
+            <div class="progress low" style="width: 30%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="progress-bar">
+            <div class="progress medium" style="width: 60%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="progress-bar">
+            <div class="progress high" style="width: 90%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main panel">
+    <h1>CareerMap Dashboard</h1>
+    <div class="user-info" style="margin-bottom: 20px; padding: 10px; background: #f0f0f0; border-radius: 8px;">
+      <p>Welcome, {{ session.user.name }}!</p>
+      <p>Email: {{ session.user.email }}</p>
+    </div>
+    <h2>Job Posting</h2>
+    <textarea placeholder="Paste job posting text here..."></textarea>
+    <button>Attach PDF (optional)</button>
+    <p>Please submit a job posting with skills you'd like to learn...</p>
+  </div>
+
+  <div class="nav panel">
+    <button>Calendar</button>
+    <button>Learn</button>
+  </div>
+</body>
+</html>
